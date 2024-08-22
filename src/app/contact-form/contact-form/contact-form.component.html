@@ -1,0 +1,27 @@
+<mat-card>
+    <form [formGroup]="contactForm" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
+        <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="name"  />
+            @if(nameIsValid) {
+                <mat-error>You must enter a value</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" />
+            @if(emailIsValid) {
+                <mat-error>You must enter a value</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Your Message</mat-label>
+            <textarea matInput formControlName="message"></textarea>
+            @if(messageIsValid) {
+                <mat-error>You must enter a value</mat-error>
+            }
+        </mat-form-field>
+        <button mat-flat-button color="primary" type="submit" >Submit</button> |
+        <button mat-raised-button color="accent" type="button" (click)="onReset(formDirective)">Reset</button>
+    </form>
+</mat-card>

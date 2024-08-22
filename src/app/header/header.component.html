@@ -1,0 +1,15 @@
+<mat-toolbar class="mat-primary">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>
+      <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">My App</a>
+    </span>
+    <span class="example-spacer"></span>
+    <ul>
+      <li>
+        <a mat-button routerLink="/create" routerLinkActive="active">New Post</a>
+      </li>
+    </ul>
+</mat-toolbar>
+  

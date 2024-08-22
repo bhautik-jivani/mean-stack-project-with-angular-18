@@ -1,1 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
+
+@use '@angular/material' as mat;
+
+// $theme: mat.define-theme();
+html, body { 
+  height: 100%;
+  // @include mat.all-component-themes($theme);
+  // @include mat.color-variants-backwards-compatibility($theme);
+}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-spinner {
+    margin: auto;
+    margin-top: 40vh
+}
+
+.loader {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    // width: 100%;
+    // height: 100vh;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, .32);
+}
+
+// html, body { height: 100%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.alert-success .mat-mdc-dialog-surface {
+  background-color: lightgreen;
+}
+.alert-warning .mat-mdc-dialog-surface {
+  background-color: lightyellow;
+}
+.alert-error .mat-mdc-dialog-surface {
+  background-color: lightcoral;
+}
+
+
+.mat-form-field.ng-touched.ng-invalid .mat-form-field-outline {
+  border-color: initial; /* Or any color that matches your default style */
+}
+
+.mat-form-field.ng-touched.ng-invalid .mat-form-field-placeholder {
+  color: initial; /* Or any color that matches your default style */
+}
+
+mat-paginator {
+  margin-top: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}

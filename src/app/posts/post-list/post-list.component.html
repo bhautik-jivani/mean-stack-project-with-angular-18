@@ -1,0 +1,33 @@
+
+
+@if (posts().posts.length === 0) {
+    <p class="text-center">No posts added yet!</p>
+}
+
+@if (posts().posts.length > 0) {
+    <mat-accordion>
+        @for(post of posts().posts; let idx = $index; track idx) {
+            <mat-expansion-panel #expansionpanel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>{{ post.title }}</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="post-image">
+                    <img [ngSrc]="post.imagePath" [alt]="post.title" [width]="183" [height]="275" priority>
+                </div>
+                <p>{{ post.content }}</p>
+                <mat-action-row>
+                    <button mat-button color="primary" [routerLink]="['/edit', post.id]" [queryParams]="{pagesize: postsPerPage(), page: currentPage()}">EDIT</button>
+                    <button mat-button color="warn" (click)="onDelete(post.id);expansionpanel.close()" [disabled]="isButtonDisabled()">DELETE</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+        }
+    </mat-accordion>
+    <mat-paginator [length]="totalPosts()"
+                [pageSize]="postsPerPage()"
+                [pageSizeOptions]="pageSizeOptions()"
+                [pageIndex]="currentPage() - 1"
+                (page)="onChangedPage($event)"
+                showFirstLastButtons="true"
+                aria-label="Select page">
+    </mat-paginator>
+}

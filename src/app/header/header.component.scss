@@ -1,0 +1,41 @@
+// mat-toolbar[color="primary"] {
+//     --mat-toolbar-container-background-color: var(--mdc-text-button-label-text-color);
+//     // --mat-toolbar-container-text-color: var(--mdc-text-button-label-text-color);
+//     // --mat-toolbar-container-opacity: var(--mat-text-button-hover-state-layer-opacity)
+//     // opacity: var(--mat-text-button-hover-state-layer-opacity);
+// }
+
+.mat-primary {
+    background: color-mix(in srgb, var(--mdc-text-button-label-text-color), transparent 80%);
+    color: var(--mdc-text-button-label-text-color);
+}
+
+.mat-toolbar .mat-mdc-button-base.mat-mdc-button-base.mat-unthemed {
+    color: unset;
+}
+
+.active {
+    background: #005cbb1a;
+}
+
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    // color: #fff;
+}
+
+// .mat-toolbar {
+//     background-color: darkcyan;
+// }
+
+
