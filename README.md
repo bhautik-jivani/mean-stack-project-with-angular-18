@@ -2,9 +2,29 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.1.
 
-## Development server
+## Development server - Frontend
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+## Development server - Backend
+Open another terminal and Run `npm run start:server` for a backend server.
+
+Create `.env` file inside `backend` folder and set below values
+`NODE_ENV=production`
+
+create json file inside `config` folder based on your requirements. Like, `devlopment.json`, `production.json` or `test.json` and set below configuration:
+```json
+{
+    "port": "<port>", // 3000 to run your backend server 
+    "database": {
+        "host": "<db-host>", // "localhost"
+        "port": "<db-port>", // 27017
+        "user": "<db-username>",
+        "password": "<db-password>",
+        "name": "<db-name>"
+    }
+}
+```
 
 ## Code scaffolding
 
