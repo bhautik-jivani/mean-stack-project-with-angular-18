@@ -6,16 +6,16 @@ import { MatCard } from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { mimeType } from './mime-type.validator';
+import { mimeType } from '../../shared/validators/mime-type.validator';
 import { PostsService } from '../posts.service';
+import { cannotContainSpace } from '../../shared/validators/cannot-contain-space.validators';
 
 
 @Component({
   selector: 'app-post-create',
   standalone: true,
-  imports: [ReactiveFormsModule, MatCard, MatFormFieldModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule],
+  imports: [ReactiveFormsModule, MatCard, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './post-create.component.html',
   styleUrl: './post-create.component.scss'
 })
@@ -32,19 +32,25 @@ export class PostCreateComponent implements OnInit {
   currentPage = this.postsService.currentPage
 
   postForm = new FormGroup({
-    title: new FormControl("", { nonNullable: true, validators: [Validators.required] }),
-    content: new FormControl("", { nonNullable: true, validators: [Validators.required] }),
+    title: new FormControl("", { nonNullable: true, validators: [Validators.required, cannotContainSpace] }),
+    content: new FormControl("", { nonNullable: true, validators: [Validators.required, cannotContainSpace] }),
     image: new FormControl<File | string>("", { nonNullable: true, validators: [Validators.required], asyncValidators: [mimeType] }),
   })
 
-  get titleIsValid() {
+  get titleIsRequired() {
     // return this.postForm.controls.title.touched && this.postForm.controls.title.dirty && this.postForm.controls.title.invalid
-    return this.postForm.controls.title.invalid
+    return this.postForm.controls.title.invalid && this.postForm.controls.title.hasError("required")
+  }
+  get hasTitleContainSpace() {
+    return this.postForm.controls.title.invalid && this.postForm.controls.title.hasError("cannotContainSpace")
   }
   
-  get contentIsValid() {
+  get contentIsRequired() {
     // return this.postForm.controls.content.touched && this.postForm.controls.content.dirty && this.postForm.controls.content.invalid
-    return this.postForm.controls.content.invalid
+    return this.postForm.controls.content.invalid && this.postForm.controls.content.hasError("required")
+  }
+  get hasContentContainSpace() {
+    return this.postForm.controls.content.invalid && this.postForm.controls.content.hasError("cannotContainSpace")
   }
   
   ngOnInit(): void {  
@@ -107,7 +113,11 @@ export class PostCreateComponent implements OnInit {
 
     this.isButtonDisabled.set(true)
     
-    const postData = {title: this.postForm.value.title ?? '', content: this.postForm.value.content ?? '', image: this.postForm.value.image ?? ''}
+    const postData = {
+      title: this.postForm.value.title ?? '',
+      content: this.postForm.value.content ?? '',
+      image: this.postForm.value.image ?? ''
+    }
 
     if (this.postId()) {
       const subscription = this.postsService.updatePost(this.postId(), postData, this.postsPerPage(), this.currentPage()).subscribe({

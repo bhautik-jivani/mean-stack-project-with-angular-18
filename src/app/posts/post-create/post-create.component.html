@@ -3,13 +3,16 @@
         <mat-form-field appearance="outline">
             <mat-label>Title</mat-label>
             <input matInput type="text" formControlName="title"  />
-            @if(titleIsValid) {
+            @if(titleIsRequired) {
                 <mat-error>You must enter a value</mat-error>
+            }
+            @if(hasTitleContainSpace && !titleIsRequired) {
+                <mat-error>Cannot enter a white space</mat-error>
             }
         </mat-form-field>
         <div class="mat-form-field">
             <div class="mat-mdc-text-field-wrapper">
-                <button mat-raised-button type="button" (click)="filePicker.click();filePicker.value=''">Pick a Image</button>
+                <button mat-stroked-button type="button" (click)="filePicker.click();filePicker.value=''">Pick a Image</button>
                 <input hidden type="file" (change)="onImagePicked($event)" #filePicker>
             </div>
             @if(imagePreview() && imagePreview() !== "" && postForm.controls.image.valid) {
@@ -20,10 +23,10 @@
             @if(postForm.controls.image.errors || null){
                 <div class="mat-mdc-form-field-subscript-wrapper mat-mdc-form-field-bottom-align">
                     <div class="mat-mdc-form-field-hint-wrapper mat-mdc-form-field-error-wrapper">
-                        @if(postForm.controls.image.errors?.['invalidMimeType']) {
+                        @if(postForm.controls.image.hasError('invalidMimeType')) {
                             <mat-error>You must choose a valid image</mat-error>
                         }
-                        @if(postForm.controls.image.errors?.['required'] && formDirective.submitted) {
+                        @if(postForm.controls.image.hasError('required') && formDirective.submitted) {
                             <mat-error>You must choose a image</mat-error>
                         }
                     </div>
@@ -33,11 +36,14 @@
         <mat-form-field appearance="outline">
             <mat-label>Content</mat-label>
             <textarea matInput formControlName="content"></textarea>
-            @if(contentIsValid) {
+            @if(contentIsRequired) {
                 <mat-error>You must enter a value</mat-error>
             }
+            @if(hasContentContainSpace && !contentIsRequired) {
+                <mat-error>Cannot enter a white space</mat-error>
+            }
         </mat-form-field>
-        <button mat-flat-button color="primary" type="submit" [disabled]="isButtonDisabled()">Save Post</button> |
-        <button mat-raised-button color="accent" type="button" (click)="onReset(formDirective)">Reset</button>
+        <button mat-button color="primary" type="submit" [disabled]="isButtonDisabled()">Save Post</button> |
+        <button mat-button color="warn" type="button" (click)="onReset(formDirective)">Reset</button>
     </form>
 </mat-card>

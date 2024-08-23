@@ -7,9 +7,24 @@
     </span>
     <span class="example-spacer"></span>
     <ul>
-      <li>
-        <a mat-button routerLink="/create" routerLinkActive="active">New Post</a>
-      </li>
+      @if(!isAuthenticated()) {
+        <li>
+          <a mat-button routerLink="/login" routerLinkActive="active">Login</a>
+        </li>
+        <li>
+          <a mat-button routerLink="/signup" routerLinkActive="active">Signup</a>
+        </li>
+      }
+      @if(isAuthenticated()) {
+
+        <li>
+          <a mat-button routerLink="/create" routerLinkActive="active">New Post</a>
+        </li>
+        <li>
+          <button mat-button type="button" (click)="onLogout()">Logout</button>
+        </li>
+      }
+      
     </ul>
 </mat-toolbar>
   

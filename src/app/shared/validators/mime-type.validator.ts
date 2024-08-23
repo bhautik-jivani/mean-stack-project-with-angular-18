@@ -1,7 +1,7 @@
-import { AbstractControl, AsyncValidatorFn } from "@angular/forms";
+import { AbstractControl, AsyncValidatorFn, ValidationErrors } from "@angular/forms";
 import { map, Observable, of } from "rxjs";
 
-export const mimeType: AsyncValidatorFn = (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+export const mimeType: AsyncValidatorFn = (control: AbstractControl): Observable<ValidationErrors | null> => {
   if (typeof control.value === 'string') {
     return of(null); // If the value is a string, skip validation
   }
@@ -10,7 +10,7 @@ export const mimeType: AsyncValidatorFn = (control: AbstractControl): Observable
   const fileReader = new FileReader();
   
   // Convert FileReader to an Observable
-  const frObs = new Observable<{ [key: string]: any } | null>((observer) => {
+  const frObs = new Observable<ValidationErrors | null>((observer) => {
     fileReader.onloadend = () => {
       const arr = new Uint8Array(fileReader.result as ArrayBuffer).subarray(0, 4);
       let header = '';

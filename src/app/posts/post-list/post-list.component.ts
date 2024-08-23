@@ -5,6 +5,7 @@ import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { NgOptimizedImage } from '@angular/common';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-post-list',
@@ -18,6 +19,7 @@ export class PostListComponent implements OnInit {
   private destroyRef = inject(DestroyRef)
   private router = inject(Router)
   private activatedRoute = inject(ActivatedRoute)
+  private authService = inject(AuthService)
 
   isButtonDisabled = signal(false)
   
@@ -26,6 +28,7 @@ export class PostListComponent implements OnInit {
   totalPosts = this.postsService.totalPosts
   postsPerPage = this.postsService.postsPerPage
   currentPage = this.postsService.currentPage
+  isAuthenticated = this.authService.token
 
   ngOnInit(): void {
     const routeSubscription = this.activatedRoute.queryParams.subscribe({

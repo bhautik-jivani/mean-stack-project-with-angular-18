@@ -1,0 +1,45 @@
+<mat-card>
+    <h3 class="text-center">Signup</h3>
+    <form [formGroup]="signupForm" #formDirective="ngForm" (ngSubmit)="onSignup(formDirective)" (keydown.enter)="$event.preventDefault()">
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email"  />
+            @if(emailIsRequired) {
+                <mat-error>You must enter a value</mat-error>
+            }
+            @if(emailIsValid && !hasEmailContainSpace) {
+                <mat-error>You must enter a valid email</mat-error>
+            }
+            @if(hasEmailContainSpace && !emailIsRequired) {
+                <mat-error>Cannot enter white space</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" #password />
+            <button
+                mat-icon-button
+                matSuffix
+                tabindex="-1"
+                type="button"
+                (click)="clickEvent()"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide()"
+                [disabled]="!this.signupForm.controls.password.dirty"
+            >
+                <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            @if(passwordIsRequired) {
+                <mat-error>You must enter a value</mat-error>
+            }
+            @if(hasPasswordValidMinLength && !hasPasswordContainSpace) {
+                <mat-error>You must enter a minimun 6 character long value</mat-error>
+            }
+            @if(hasPasswordContainSpace && !passwordIsRequired) {
+                <mat-error>Cannot enter white space</mat-error>
+            }
+        </mat-form-field>
+        <button mat-button color="primary" type="submit" [disabled]="isButtonDisabled()">Signup</button> |
+        <button mat-button color="warn" type="button" (click)="onReset(formDirective)">Reset</button>
+    </form>
+</mat-card>

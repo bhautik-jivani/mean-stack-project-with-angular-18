@@ -71,7 +71,7 @@ export class PostsService {
             catchError((error) => {
                 const messages = {
                     title: "An error occured",
-                    message: "Something went wrong while fetching your posts. Please again later.",
+                    message: "Something went wrong while fetching your posts. Please try again later.",
                     mode: "ERROR"
                 }
                 this.loaderService.hideLoader()
@@ -102,7 +102,6 @@ export class PostsService {
                 }
                 this.loaderService.hideLoader()
                 this.modalService.showMessage(messages)
-                console.log("currentpage---",currentpage);
                 
                 this.router.navigate(["/"], {
                     relativeTo: this.activatedRoute,
@@ -130,7 +129,8 @@ export class PostsService {
             catchError((error) => {
                 const messages = {
                     title: "An error occured",
-                    message: "Something went wrong while create post. Please again later.",
+                    // message: "Something went wrong while create post. Please again later.",
+                    message: error.error.message,
                     mode: "ERROR"
                 }
                 this.loaderService.hideLoader()
@@ -169,7 +169,8 @@ export class PostsService {
             catchError((error) => {
                 const messages = {
                     title: "An error occured",
-                    message: "Something went wrong while update post. Please try again.",
+                    // message: "Something went wrong while update post. Please try again.",
+                    message: error.error.message,
                     mode: "ERROR"
                 }
                 this.loaderService.hideLoader()

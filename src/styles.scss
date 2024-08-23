@@ -57,3 +57,20 @@ mat-paginator {
 .text-center {
   text-align: center;
 }
+
+app-login, app-signup, app-post-create {
+  display: flex;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 840px) {
+  app-login, app-signup, app-post-create {
+    display: unset
+  }
+}
+
+@media only screen and (min-width: 840px) {
+  app-post-create mat-card {
+    width: 80%;
+  }
+}
