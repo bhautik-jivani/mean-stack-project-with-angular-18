@@ -70,16 +70,6 @@ export class PostsService {
                     currentPage: postData.currentPage,
                 }
             }),
-            catchError((error) => {
-                const messages = {
-                    title: "An error occured",
-                    message: "Something went wrong while fetching your posts. Please try again later.",
-                    mode: "ERROR"
-                }
-                this.loaderService.hideLoader()
-                this.modalService.showMessage(messages)
-                return throwError(() => new Error(messages.message))
-            }),
             tap({
                 next: (transformedPostData) => {
                     this.loaderService.hideLoader()
@@ -97,19 +87,11 @@ export class PostsService {
             params: { pagesize: pagesize, currentpage: currentpage}
         }).pipe(
             catchError((error) => {
-                const messages = {
-                    title: "An error occured",
-                    message: "Post not found. Please again later.",
-                    mode: "ERROR"
-                }
-                this.loaderService.hideLoader()
-                this.modalService.showMessage(messages)
-                
                 this.router.navigate(["/"], {
                     relativeTo: this.activatedRoute,
                     queryParams: { pagesize: pagesize, page: currentpage }
                 })
-                return throwError(() => new Error(messages.message))
+                return throwError(() => new Error(error))
             }),
             tap({
                 next: (postData) => {
@@ -138,17 +120,6 @@ export class PostsService {
         postData.append("creator", postObj.creator)
         
         return this.http.post<{ message: string, post: Post }>('http://localhost:3000/api/posts', postData).pipe(
-            catchError((error) => {
-                const messages = {
-                    title: "An error occured",
-                    // message: "Something went wrong while create post. Please again later.",
-                    message: error.error.message,
-                    mode: "ERROR"
-                }
-                this.loaderService.hideLoader()
-                this.modalService.showMessage(messages)
-                return throwError(() => new Error(messages.message))
-            }),
             tap({
                 complete: () => {
                     const messages = {
@@ -179,17 +150,6 @@ export class PostsService {
         }
         
         return this.http.put<{message: string, post: Post}>('http://localhost:3000/api/posts/' + postId, updatedPostData).pipe(
-            catchError((error) => {
-                const messages = {
-                    title: "An error occured",
-                    // message: "Something went wrong while update post. Please try again.",
-                    message: error.error.message,
-                    mode: "ERROR"
-                }
-                this.loaderService.hideLoader()
-                this.modalService.showMessage(messages)
-                return throwError(() => new Error(messages.message))
-            }),
             tap({
                 complete: () => {
                     const messages = {
@@ -212,17 +172,6 @@ export class PostsService {
     deletePost(postId: string) {
         this.loaderService.showLoader()
         return this.http.delete<{ message: string }>('http://localhost:3000/api/posts/' + postId).pipe(
-            catchError((error) => {
-                const messages = {
-                    title: "An error occured",
-                    // message: "Something went wrong while delete post. Please again later.",
-                    message: error.error.message,
-                    mode: "ERROR"
-                }
-                this.loaderService.hideLoader()
-                this.modalService.showMessage(messages)
-                return throwError(() => new Error(messages.message))
-            }),
             tap({
                 complete: () => {
                     const messages = {

@@ -25,16 +25,16 @@ export class AuthService {
     createUser(authData: AuthData) {
         this.loaderService.showLoader()
         return this.http.post<{ message: string, user: any }>("http://localhost:3000/api/user/signup", authData).pipe(
-            catchError((error) => {
-                const messages = {
-                    title: "An error occured",
-                    message: error.error.message,
-                    mode: "ERROR"
-                }
-                this.loaderService.hideLoader()
-                this.modalService.showMessage(messages)
-                return throwError(() => new Error(messages.message))
-            }),
+            // catchError((error) => {
+            //     const messages = {
+            //         title: "An error occured",
+            //         message: error.error.message,
+            //         mode: "ERROR"
+            //     }
+            //     this.loaderService.hideLoader()
+            //     this.modalService.showMessage(messages)
+            //     return throwError(() => new Error(messages.message))
+            // }),
             tap({
                 next: (transformedUserData) => {
                     const messages = {
@@ -51,16 +51,6 @@ export class AuthService {
 
     login(authData: AuthData) {
         return this.http.post<{userId: string, email: string, token: string, expiresIn: number }>("http://localhost:3000/api/user/login", authData).pipe(
-            catchError((error) => {
-                const messages = {
-                    title: 'An error occured',
-                    message: error.error.message,
-                    mode: "ERROR"
-                }
-                this.loaderService.hideLoader()
-                this.modalService.showMessage(messages)
-                return throwError(() => new Error(messages.message))
-            }),
             tap({
                 next: (resp) => {
                     this.loaderService.hideLoader()

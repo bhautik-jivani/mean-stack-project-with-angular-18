@@ -7,12 +7,13 @@ import { routes } from './app.routes';
 
 import { authInterceptors } from './auth/auth-interceptor';
 import { AuthGuard } from './auth/auth.guard';
+import { errorInterceptors } from './error-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(
-      withInterceptors([authInterceptors])
+      withInterceptors([authInterceptors, errorInterceptors])
     ),
     provideRouter(
       routes,
