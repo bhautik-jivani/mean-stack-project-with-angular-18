@@ -39,7 +39,12 @@
                 <mat-error>Cannot enter white space</mat-error>
             }
         </mat-form-field>
-        <button mat-button color="primary" type="submit" [disabled]="isButtonDisabled()">Login</button> |
-        <button mat-button color="warn" type="button" (click)="onReset(formDirective)">Reset</button>
+        <button mat-button color="primary" type="submit" [disabled]="isButtonDisabled()">
+            Login
+        </button> |
+        <a mat-button color="primary" routerLink="/signup">
+            <mat-icon aria-label="Signup" fontIcon="person_add"></mat-icon>
+            Signup
+        </a>
     </form>
 </mat-card>

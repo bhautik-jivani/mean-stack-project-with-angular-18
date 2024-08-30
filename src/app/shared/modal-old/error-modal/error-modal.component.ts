@@ -1,7 +1,9 @@
 import { Component, inject, input } from '@angular/core';
+
+import { MatButton } from '@angular/material/button';
+
 import { ModalComponent } from "../modal.component";
 import { ErrorService } from '../../modal.service';
-import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-error-modal',

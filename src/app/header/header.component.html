@@ -3,25 +3,43 @@
       <mat-icon>menu</mat-icon>
     </button>
     <span>
-      <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">My App</a>
+      <a mat-button routerLink="/posts" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon aria-label="Home" fontIcon="home"></mat-icon>
+        My App
+      </a>
     </span>
     <span class="example-spacer"></span>
     <ul>
       @if(!isAuthenticated()) {
         <li>
-          <a mat-button routerLink="/login" routerLinkActive="active">Login</a>
+          <a mat-button routerLink="/login" routerLinkActive="active">
+            <mat-icon aria-label="Login" fontIcon="logout"></mat-icon>
+            Login
+          </a>
         </li>
         <li>
-          <a mat-button routerLink="/signup" routerLinkActive="active">Signup</a>
+          <a mat-button routerLink="/signup" routerLinkActive="active">
+            <mat-icon aria-label="Signup" fontIcon="person_add"></mat-icon>
+            Signup
+          </a>
         </li>
       }
       @if(isAuthenticated()) {
 
         <li>
-          <a mat-button routerLink="/create" routerLinkActive="active">New Post</a>
+          <a mat-button [matTooltip]="email()" routerLink="/">{{email()}}</a>
         </li>
         <li>
-          <button mat-button type="button" (click)="onLogout()">Logout</button>
+          <a mat-button routerLink="/posts/create" routerLinkActive="active">
+            <mat-icon aria-label="New Post" fontIcon="add"></mat-icon>
+            New Post
+          </a>
+        </li>
+        <li>
+          <button mat-button type="button" (click)="onLogout()">
+            <mat-icon aria-label="Logout" fontIcon="logout"></mat-icon>
+            Logout
+          </button>
         </li>
       }
       

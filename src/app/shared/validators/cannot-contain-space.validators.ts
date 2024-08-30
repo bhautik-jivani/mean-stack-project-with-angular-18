@@ -1,5 +1,4 @@
-import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from "@angular/forms"
-import { Observable } from "rxjs"
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms"
 
 export const cannotContainSpace: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     // if((control.value as string).indexOf(' ') >= 0) {

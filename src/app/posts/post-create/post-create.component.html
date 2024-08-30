@@ -1,49 +1,63 @@
 <mat-card>
-    <form [formGroup]="postForm" #formDirective="ngForm" (ngSubmit)="onAddPost(formDirective)">
-        <mat-form-field appearance="outline">
-            <mat-label>Title</mat-label>
-            <input matInput type="text" formControlName="title"  />
-            @if(titleIsRequired) {
-                <mat-error>You must enter a value</mat-error>
-            }
-            @if(hasTitleContainSpace && !titleIsRequired) {
-                <mat-error>Cannot enter a white space</mat-error>
-            }
-        </mat-form-field>
-        <div class="mat-form-field">
-            <div class="mat-mdc-text-field-wrapper">
-                <button mat-stroked-button type="button" (click)="filePicker.click();filePicker.value=''">Pick a Image</button>
-                <input hidden type="file" (change)="onImagePicked($event)" #filePicker>
-            </div>
-            @if(imagePreview() && imagePreview() !== "" && postForm.controls.image.valid) {
-                <div class="image-preview">
-                    <img [src]="imagePreview()" [alt]="postForm.value.title">
+    <mat-card-header>
+        <button mat-button color="secondary" [routerLink]="['/posts']" [queryParams]="{pagesize: postsPerPage(), page: currentPage()}">
+            <mat-icon aria-label="Back" fontIcon="arrow_back"></mat-icon>
+            BACK
+        </button>
+    </mat-card-header>
+    <mat-card-content>
+        <form [formGroup]="postForm" #formDirective="ngForm" (ngSubmit)="onAddPost(formDirective)">
+            <mat-form-field appearance="outline">
+                <mat-label>Title</mat-label>
+                <input matInput type="text" formControlName="title"  />
+                @if(titleIsRequired) {
+                    <mat-error>You must enter a value</mat-error>
+                }
+                @if(hasTitleContainSpace && !titleIsRequired) {
+                    <mat-error>Cannot enter a white space</mat-error>
+                }
+            </mat-form-field>
+            <div class="mat-form-field">
+                <div class="mat-mdc-text-field-wrapper">
+                    <button mat-stroked-button type="button" (click)="filePicker.click();filePicker.value=''">Pick a Image</button>
+                    <input hidden type="file" (change)="onImagePicked($event)" #filePicker>
                 </div>
-            }
-            @if(postForm.controls.image.errors || null){
-                <div class="mat-mdc-form-field-subscript-wrapper mat-mdc-form-field-bottom-align">
-                    <div class="mat-mdc-form-field-hint-wrapper mat-mdc-form-field-error-wrapper">
-                        @if(postForm.controls.image.hasError('invalidMimeType')) {
-                            <mat-error>You must choose a valid image</mat-error>
-                        }
-                        @if(postForm.controls.image.hasError('required') && formDirective.submitted) {
-                            <mat-error>You must choose a image</mat-error>
-                        }
+                @if(imagePreview() && imagePreview() !== "" && postForm.controls.image.valid) {
+                    <div class="image-preview">
+                        <img [src]="imagePreview()" [alt]="postForm.value.title">
                     </div>
-                </div>
-            }
-        </div>
-        <mat-form-field appearance="outline">
-            <mat-label>Content</mat-label>
-            <textarea matInput formControlName="content"></textarea>
-            @if(contentIsRequired) {
-                <mat-error>You must enter a value</mat-error>
-            }
-            @if(hasContentContainSpace && !contentIsRequired) {
-                <mat-error>Cannot enter a white space</mat-error>
-            }
-        </mat-form-field>
-        <button mat-button color="primary" type="submit" [disabled]="isButtonDisabled()">Save Post</button> |
-        <button mat-button color="warn" type="button" (click)="onReset(formDirective)">Reset</button>
-    </form>
+                }
+                @if(postForm.controls.image.errors || null){
+                    <div class="mat-mdc-form-field-subscript-wrapper mat-mdc-form-field-bottom-align">
+                        <div class="mat-mdc-form-field-hint-wrapper mat-mdc-form-field-error-wrapper">
+                            @if(postForm.controls.image.hasError('invalidMimeType')) {
+                                <mat-error>You must choose a valid image</mat-error>
+                            }
+                            @if(postForm.controls.image.hasError('required') && formDirective.submitted) {
+                                <mat-error>You must choose a image</mat-error>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            <mat-form-field appearance="outline">
+                <mat-label>Content</mat-label>
+                <textarea matInput formControlName="content"></textarea>
+                @if(contentIsRequired) {
+                    <mat-error>You must enter a value</mat-error>
+                }
+                @if(hasContentContainSpace && !contentIsRequired) {
+                    <mat-error>Cannot enter a white space</mat-error>
+                }
+            </mat-form-field>
+            <button mat-button color="primary" type="submit" [disabled]="isButtonDisabled()">
+                <mat-icon aria-label="Save Post" fontIcon="save"></mat-icon>
+                Save Post
+            </button>
+            <button mat-button color="warn" type="button" (click)="onReset(formDirective)" [disabled]="!formDirective.form.dirty">
+                <mat-icon aria-label="Clear All" fontIcon="clear_all"></mat-icon>
+                Reset
+            </button>
+        </form>
+    </mat-card-content>
 </mat-card>

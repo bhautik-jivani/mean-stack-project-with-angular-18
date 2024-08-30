@@ -1,12 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { HeaderComponent } from './header/header.component';
 import { ModalService } from './shared/modal.service';
 import { ModalComponent } from './shared/modal/modal.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { LoaderService } from './shared/loader.service';
+
 import { AuthService } from './auth/auth.service';
+
+import { HeaderComponent } from './header/header.component';
 
 @Component({
   selector: 'app-root',

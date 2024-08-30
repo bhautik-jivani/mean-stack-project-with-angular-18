@@ -1,10 +1,11 @@
 import { inject, Injectable, signal } from "@angular/core";
-import { Post } from "./post.model";
 import { HttpClient } from "@angular/common/http";
+import { ActivatedRoute, Router } from "@angular/router";
 import { catchError, map, tap, throwError } from "rxjs";
+
+import { Post } from "./post.model";
 import { ModalService } from "../shared/modal.service";
 import { LoaderService } from "../shared/loader.service";
-import { ActivatedRoute, Router } from "@angular/router";
 
 @Injectable({ providedIn: 'root' })
 export class PostsService {
@@ -62,6 +63,7 @@ export class PostsService {
                             title: post.title,
                             content: post.content,
                             imagePath: post.imagePath,
+                            creator: post.creator
                         }
                     }),
                     maxPosts: postData.maxPosts,
@@ -89,7 +91,7 @@ export class PostsService {
         )
     }
 
-    getPost(postId: string, pagesize: number, currentpage: number) {
+    getPost(postId: string, userId: string, pagesize: number, currentpage: number, isEditPage: boolean = false) {
         this.loaderService.showLoader()
         return this.http.get<{ message: string, post: any }>("http://localhost:3000/api/posts/" + postId, {
             params: { pagesize: pagesize, currentpage: currentpage}
@@ -112,7 +114,16 @@ export class PostsService {
             tap({
                 next: (postData) => {
                     this.loaderService.hideLoader()
-                    return postData.post
+                    if(postData.post.creator !== userId && isEditPage) {
+                        this.router.navigate(["/posts", postId], { queryParams: {  pagesize: this.postsPerPage(), page: this.currentPage() }})
+                    }
+                    return {
+                        id: postData.post._id,
+                        title: postData.post.title,
+                        content: postData.post.content,
+                        imagePath: postData.post.imagePath,
+                        creator: postData.post.creator,
+                    }
                 }
             })
         )
@@ -124,6 +135,7 @@ export class PostsService {
         postData.append("title", postObj.title)
         postData.append("content", postObj.content)
         postData.append("image", postObj.image)
+        postData.append("creator", postObj.creator)
         
         return this.http.post<{ message: string, post: Post }>('http://localhost:3000/api/posts', postData).pipe(
             catchError((error) => {
@@ -161,6 +173,7 @@ export class PostsService {
             updatedPostData.append("title", postObj.title)
             updatedPostData.append("content", postObj.content)
             updatedPostData.append("image", postObj.image)
+            updatedPostData.append("creator", postObj.creator)
         } else {
             updatedPostData = {...postObj, id: postId}
         }
@@ -202,7 +215,8 @@ export class PostsService {
             catchError((error) => {
                 const messages = {
                     title: "An error occured",
-                    message: "Something went wrong while delete post. Please again later.",
+                    // message: "Something went wrong while delete post. Please again later.",
+                    message: error.error.message,
                     mode: "ERROR"
                 }
                 this.loaderService.hideLoader()
@@ -223,7 +237,7 @@ export class PostsService {
                         const pagesize = this.postsPerPage()
                         const currentPage = this.currentPage() - 1
                         this.updatePaginator(pagesize, currentPage)
-                        this.router.navigate([""], {queryParams: {pagesize: pagesize, page: currentPage}})
+                        this.router.navigate(["/"], {queryParams: {pagesize: pagesize, page: currentPage}})
                     } else {
                         const pagesize = this.postsPerPage()
                         const currentPage = this.currentPage() 

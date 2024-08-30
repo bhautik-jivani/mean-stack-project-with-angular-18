@@ -40,13 +40,14 @@ router.post("/signup", (req, res, next) => {
 })
 
 router.post("/login", (req, res, next) => {
+    let fetchedUser;
     User.findOne({ email: req.body.email}).then((user) => {
         if (!user) {
             return res.status(400).json({
                 message: 'User not registered with given email, Please try to Signup.'
             })
         }
-
+        fetchedUser = user
         return bcrypt.compare(req.body.password, user.password)
     }).then((result) => {
         if(typeof result === "object") {
@@ -58,11 +59,11 @@ router.post("/login", (req, res, next) => {
                 message: 'Invalid password founded!'
             })
         }
-
+        
         const token = jwt.sign(
             {
-                email: user.email,
-                userId: user._id
+                email: fetchedUser.email,
+                userId: fetchedUser._id
             },
             'my_supersecret',
             {
@@ -71,6 +72,8 @@ router.post("/login", (req, res, next) => {
         )
 
         res.status(200).json({
+            email: fetchedUser.email,
+            userId: fetchedUser._id,
             token: token,
             expiresIn: 3600 // Seconds
         })

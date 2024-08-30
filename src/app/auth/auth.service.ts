@@ -1,10 +1,11 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
-import { AuthData } from "./auth-data.model";
+import { Router } from "@angular/router";
 import { catchError, tap, throwError } from "rxjs";
+
 import { LoaderService } from "../shared/loader.service";
 import { ModalService } from "../shared/modal.service";
-import { Router } from "@angular/router";
+import { AuthData } from "./auth-data.model";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -12,10 +13,14 @@ export class AuthService {
     private modalService = inject(ModalService)
     private loaderService = inject(LoaderService)
     private _token = signal<string>('')
+    private _userId = signal<string>('')
+    private _email = signal<string>('')
     private router = inject(Router)
     private tokenTimer: any
 
+    email = this._email.asReadonly()
     token = this._token.asReadonly()
+    userId = this._userId.asReadonly()
 
     createUser(authData: AuthData) {
         this.loaderService.showLoader()
@@ -45,7 +50,7 @@ export class AuthService {
     }
 
     login(authData: AuthData) {
-        return this.http.post<{ token: string, expiresIn: number }>("http://localhost:3000/api/user/login", authData).pipe(
+        return this.http.post<{userId: string, email: string, token: string, expiresIn: number }>("http://localhost:3000/api/user/login", authData).pipe(
             catchError((error) => {
                 const messages = {
                     title: 'An error occured',
@@ -60,13 +65,20 @@ export class AuthService {
                 next: (resp) => {
                     this.loaderService.hideLoader()
                     if(resp.token) {
+                        const email = resp.email
+                        const userId = resp.userId
                         const token = resp.token
                         const expiresInDuration = resp.expiresIn
+
                         this.setAuthTimer(expiresInDuration)
                         const now = new Date()
                         const expirationDate = new Date(now.getTime() + expiresInDuration * 1000)
-                        this.saveAuthData(token, expirationDate)
+                        this.saveAuthData(userId, email, token, expirationDate)
+
+                        this._userId.set(userId)
+                        this._email.set(email)
                         this._token.set(token)
+
                         const messages = {
                             title: "Success",
                             message: "User loggedin successfully.",
@@ -89,6 +101,8 @@ export class AuthService {
 
     logout() {
         this._token.set('')
+        this._userId.set('')
+        this._email.set('')
         clearTimeout(this.tokenTimer)
         this.clearAuthData()
         this.router.navigate(["/"])
@@ -96,13 +110,17 @@ export class AuthService {
 
     autoAuthUser() {
         const authInformation = this.getAuthData()
+        
         if(!authInformation) {
+            this.clearAuthData()
             return
         }
         
         const now = new Date()
         const expiresIn = authInformation.expirationDate.getTime() - now.getTime()
         if (expiresIn > 0) {
+            this._userId.set(authInformation.userId)
+            this._email.set(authInformation.email)
             this._token.set(authInformation.token)
             this.setAuthTimer(expiresIn / 1000)
         } 
@@ -114,25 +132,33 @@ export class AuthService {
         }, duration * 1000)
     }
 
-    private saveAuthData(token: string, expirationDate: Date) {
+    private saveAuthData(userId: string, email: string, token: string, expirationDate: Date) {
+        localStorage.setItem("userId", userId)
+        localStorage.setItem("email", email)
         localStorage.setItem("token", token)
         localStorage.setItem("expiration", expirationDate.toISOString())
     }
 
     private clearAuthData() {
+        localStorage.removeItem("userId")
+        localStorage.removeItem("email")
         localStorage.removeItem("token")
         localStorage.removeItem("expiration")
     }
 
     private getAuthData() {
+        const userId = localStorage.getItem("userId")
+        const email = localStorage.getItem("email")
         const token = localStorage.getItem("token")
         const expirationDate = localStorage.getItem("expiration")
 
-        if (!token || !expirationDate) {
+        if (!userId || !email || !token || !expirationDate) {
             return
         }
 
         return {
+            userId: userId,
+            email: email,
             token: token,
             expirationDate: new Date(expirationDate)
         }

@@ -1,27 +1,30 @@
 import { Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
-import { MatCard } from '@angular/material/card';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 import { mimeType } from '../../shared/validators/mime-type.validator';
-import { PostsService } from '../posts.service';
 import { cannotContainSpace } from '../../shared/validators/cannot-contain-space.validators';
+import { PostsService } from '../posts.service';
+import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from '../../auth/auth.service';
 
 
 @Component({
   selector: 'app-post-create',
   standalone: true,
-  imports: [ReactiveFormsModule, MatCard, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, RouterLink, MatIconModule],
   templateUrl: './post-create.component.html',
   styleUrl: './post-create.component.scss'
 })
 
 export class PostCreateComponent implements OnInit {
   private postsService = inject(PostsService)
+  private authService = inject(AuthService)
   private destroyRef = inject(DestroyRef)
   private activatedRoute = inject(ActivatedRoute)
 
@@ -30,6 +33,7 @@ export class PostCreateComponent implements OnInit {
   imagePreview = signal<string>('')
   postsPerPage = this.postsService.postsPerPage
   currentPage = this.postsService.currentPage
+  userId = this.authService.userId
 
   postForm = new FormGroup({
     title: new FormControl("", { nonNullable: true, validators: [Validators.required, cannotContainSpace] }),
@@ -65,7 +69,7 @@ export class PostCreateComponent implements OnInit {
           } else {
             this.postsService.updatePaginator(this.postsPerPage(), 1)
           }
-          const subscription = this.postsService.getPost(this.postId(), this.postsPerPage(), this.currentPage()).subscribe({
+          const subscription = this.postsService.getPost(this.postId(), this.userId(), this.postsPerPage(), this.currentPage(), true).subscribe({
             next: (resp) => {
               this.postForm.patchValue({
                 title: resp.post.title, 
@@ -116,7 +120,8 @@ export class PostCreateComponent implements OnInit {
     const postData = {
       title: this.postForm.value.title ?? '',
       content: this.postForm.value.content ?? '',
-      image: this.postForm.value.image ?? ''
+      image: this.postForm.value.image ?? '',
+      creator: '',
     }
 
     if (this.postId()) {

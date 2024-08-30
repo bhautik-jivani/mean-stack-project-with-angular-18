@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import { LoaderService } from '../loader.service';
 
 @Component({

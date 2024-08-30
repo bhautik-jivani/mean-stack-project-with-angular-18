@@ -12,15 +12,25 @@
                     <mat-panel-title>{{ post.title }}</mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="post-image">
-                    <img [ngSrc]="post.imagePath" [alt]="post.title" [width]="183" [height]="275" priority>
+                    <img [src]="post.imagePath" [alt]="post.title" height="300">
                 </div>
                 <p>{{ post.content }}</p>
-                @if( isAuthenticated() ) {
-                    <mat-action-row>
-                        <button mat-button color="primary" [routerLink]="['/edit', post.id]" [queryParams]="{pagesize: postsPerPage(), page: currentPage()}">EDIT</button>
-                        <button mat-button color="warn" (click)="onDelete(post.id);expansionpanel.close()" [disabled]="isButtonDisabled()">DELETE</button>
-                    </mat-action-row>
+                <mat-action-row>
+                    <button mat-button [routerLink]="['/posts',post.id]" [queryParams]="{pagesize: postsPerPage(), page: currentPage()}">
+                        <mat-icon aria-label="View" fontIcon="visibility"></mat-icon>
+                        VIEW
+                    </button>
+                @if( isAuthenticated() && userId() === post.creator ) {
+                    <button mat-button color="primary" [routerLink]="['/posts/edit', post.id]" [queryParams]="{pagesize: postsPerPage(), page: currentPage()}">
+                        <mat-icon aria-label="Edit" fontIcon="edit"></mat-icon>
+                        EDIT
+                    </button>
+                    <button mat-button color="warn" (click)="onDelete(post.id);expansionpanel.close()" [disabled]="isButtonDisabled()">
+                        <mat-icon aria-label="Delete" fontIcon="delete"></mat-icon>
+                        DELETE
+                    </button>
                 }
+                </mat-action-row>
             </mat-expansion-panel>
         }
     </mat-accordion>

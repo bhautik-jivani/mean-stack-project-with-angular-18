@@ -1,19 +1,21 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+
 import { MatButtonModule } from '@angular/material/button';
-import { MatCard } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
-import { cannotContainSpace } from '../../shared/validators/cannot-contain-space.validators';
 import { MatIconModule } from '@angular/material/icon';
-import { AuthService } from '../auth.service';
+
 import { AuthData } from '../auth-data.model';
+import { AuthService } from '../auth.service';
+import { cannotContainSpace } from '../../shared/validators/cannot-contain-space.validators';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatFormFieldModule, ReactiveFormsModule, MatCard,  MatInputModule, MatButtonModule, MatIconModule],
+  imports: [MatFormFieldModule, ReactiveFormsModule, MatCardModule,  MatInputModule, MatButtonModule, MatIconModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

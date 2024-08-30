@@ -9,12 +9,18 @@ module.exports = (req, res, next) => {
     
     try {
         const [ token_keyword, token ] = req.headers.authorization.split(" ")
+        
         if(token_keyword !== "Bearer") {
             return res.status(400).json({
                 message: "Invalid bearer token."
             })
         }
-        jwt.verify(token, 'my_supersecret')
+        const decodedToken = jwt.verify(token, 'my_supersecret')
+        
+        req.userData = {
+            email: decodedToken.email,
+            userId: decodedToken.userId
+        }
         next()
     } catch (error) {
         if (error.name === "JsonWebTokenError") {

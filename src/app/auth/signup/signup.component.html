@@ -40,6 +40,9 @@
             }
         </mat-form-field>
         <button mat-button color="primary" type="submit" [disabled]="isButtonDisabled()">Signup</button> |
-        <button mat-button color="warn" type="button" (click)="onReset(formDirective)">Reset</button>
+        <a mat-button color="primary" routerLink="/login">
+            <mat-icon aria-label="Login" fontIcon="login"></mat-icon>
+            Login
+        </a>
     </form>
 </mat-card>

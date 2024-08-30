@@ -1,8 +1,9 @@
 import { AfterContentInit, Component, inject, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { NoopScrollStrategy } from '@angular/cdk/overlay';
+
 import { AlertModalComponent } from './alert-modal/alert-modal.component';
 import { ModalService, Modal } from '../modal.service';
-import { NoopScrollStrategy } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-modal',

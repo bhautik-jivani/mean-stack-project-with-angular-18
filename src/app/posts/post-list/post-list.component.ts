@@ -1,16 +1,18 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import {MatExpansionModule} from '@angular/material/expansion';
-import { PostsService } from '../posts.service';
-import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatButton } from '@angular/material/button';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { NgOptimizedImage } from '@angular/common';
+
 import { AuthService } from '../../auth/auth.service';
+import { PostsService } from '../posts.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-post-list',
   standalone: true,
-  imports: [MatExpansionModule, MatButton, RouterLink, MatPaginatorModule, NgOptimizedImage],
+  imports: [MatExpansionModule, MatButton, RouterLink, MatPaginatorModule, MatIconModule],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.scss'
 })
@@ -29,6 +31,7 @@ export class PostListComponent implements OnInit {
   postsPerPage = this.postsService.postsPerPage
   currentPage = this.postsService.currentPage
   isAuthenticated = this.authService.token
+  userId = this.authService.userId
 
   ngOnInit(): void {
     const routeSubscription = this.activatedRoute.queryParams.subscribe({
