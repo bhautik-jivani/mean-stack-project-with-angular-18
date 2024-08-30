@@ -1,3 +1,4 @@
+const CONFIG = require('../config/index')
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
@@ -61,7 +62,7 @@ exports.userLogin = (req, res, next) => {
                 email: fetchedUser.email,
                 userId: fetchedUser._id
             },
-            'my_supersecret',
+            CONFIG.JWT_KEY,
             {
                 expiresIn: '1h'
             }

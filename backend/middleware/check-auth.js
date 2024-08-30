@@ -1,3 +1,4 @@
+const CONFIG = require('../config/index')
 const jwt = require("jsonwebtoken")
 
 module.exports = (req, res, next) => {
@@ -15,7 +16,7 @@ module.exports = (req, res, next) => {
                 message: "Invalid bearer token."
             })
         }
-        const decodedToken = jwt.verify(token, 'my_supersecret')
+        const decodedToken = jwt.verify(token, CONFIG.JWT_KEY)
         
         req.userData = {
             email: decodedToken.email,

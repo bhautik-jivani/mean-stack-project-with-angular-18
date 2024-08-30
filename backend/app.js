@@ -1,4 +1,4 @@
-const config = require('./config/index')
+const CONFIG = require('./config/index')
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -10,7 +10,7 @@ const postsRoutes = require('./routes/posts')
 const userRoutes = require('./routes/user')
 const app = express()
 
-mongoose.connect(`mongodb://${config.database.host}:${config.database.port}/${config.database.name}?retryWrites=true`).then(() => {
+mongoose.connect(`mongodb://${CONFIG.DATABASE.HOST}:${CONFIG.DATABASE.PORT}/${CONFIG.DATABASE.NAME}?retryWrites=true`).then(() => {
     console.log("Connected to database!");
 }).catch(() => {
     console.log("Connection failed!");

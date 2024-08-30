@@ -1,5 +1,3 @@
-const multer = require("multer")
-
 const Post = require("../models/posts")
 
 exports.getPosts = (req, res, next) => {
