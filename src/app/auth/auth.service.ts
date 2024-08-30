@@ -6,7 +6,9 @@ import { catchError, tap, throwError } from "rxjs";
 import { LoaderService } from "../shared/loader.service";
 import { ModalService } from "../shared/modal.service";
 import { AuthData } from "./auth-data.model";
+import { environment } from "../../environments/environment";
 
+const BASE_URL = environment.apiUrl
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     private http = inject(HttpClient)
@@ -24,7 +26,7 @@ export class AuthService {
 
     createUser(authData: AuthData) {
         this.loaderService.showLoader()
-        return this.http.post<{ message: string, user: any }>("http://localhost:3000/api/user/signup", authData).pipe(
+        return this.http.post<{ message: string, user: any }>(`${BASE_URL}/user/signup`, authData).pipe(
             // catchError((error) => {
             //     const messages = {
             //         title: "An error occured",
@@ -50,7 +52,7 @@ export class AuthService {
     }
 
     login(authData: AuthData) {
-        return this.http.post<{userId: string, email: string, token: string, expiresIn: number }>("http://localhost:3000/api/user/login", authData).pipe(
+        return this.http.post<{userId: string, email: string, token: string, expiresIn: number }>(`${BASE_URL}/user/login`, authData).pipe(
             tap({
                 next: (resp) => {
                     this.loaderService.hideLoader()

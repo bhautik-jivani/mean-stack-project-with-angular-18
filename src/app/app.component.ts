@@ -7,7 +7,6 @@ import { LoaderComponent } from './shared/loader/loader.component';
 import { LoaderService } from './shared/loader.service';
 
 import { AuthService } from './auth/auth.service';
-
 import { HeaderComponent } from './header/header.component';
 
 @Component({

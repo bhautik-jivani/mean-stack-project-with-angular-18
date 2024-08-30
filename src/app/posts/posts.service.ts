@@ -6,7 +6,9 @@ import { catchError, map, tap, throwError } from "rxjs";
 import { Post } from "./post.model";
 import { ModalService } from "../shared/modal.service";
 import { LoaderService } from "../shared/loader.service";
+import { environment } from "../../environments/environment";
 
+const BASE_URL = environment.apiUrl
 @Injectable({ providedIn: 'root' })
 export class PostsService {
     private http = inject(HttpClient)
@@ -52,7 +54,7 @@ export class PostsService {
     getPosts(postsPerPage: number, currentPage: number) {
         const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`
         this.loaderService.showLoader()
-        return this.http.get<{ message: string, posts: any, maxPosts: number, currentPage: number }>("http://localhost:3000/api/posts", {
+        return this.http.get<{ message: string, posts: any, maxPosts: number, currentPage: number }>(`${BASE_URL}/posts`, {
             params: { pagesize: postsPerPage, page: currentPage }
         }).pipe(
             map((postData) => {
@@ -83,7 +85,7 @@ export class PostsService {
 
     getPost(postId: string, userId: string, pagesize: number, currentpage: number, isEditPage: boolean = false) {
         this.loaderService.showLoader()
-        return this.http.get<{ message: string, post: any }>("http://localhost:3000/api/posts/" + postId, {
+        return this.http.get<{ message: string, post: any }>(`${BASE_URL}/posts/` + postId, {
             params: { pagesize: pagesize, currentpage: currentpage}
         }).pipe(
             catchError((error) => {
@@ -119,7 +121,7 @@ export class PostsService {
         postData.append("image", postObj.image)
         postData.append("creator", postObj.creator)
         
-        return this.http.post<{ message: string, post: Post }>('http://localhost:3000/api/posts', postData).pipe(
+        return this.http.post<{ message: string, post: Post }>(`${BASE_URL}/posts`, postData).pipe(
             tap({
                 complete: () => {
                     const messages = {
@@ -149,7 +151,7 @@ export class PostsService {
             updatedPostData = {...postObj, id: postId}
         }
         
-        return this.http.put<{message: string, post: Post}>('http://localhost:3000/api/posts/' + postId, updatedPostData).pipe(
+        return this.http.put<{message: string, post: Post}>(`${BASE_URL}/posts/` + postId, updatedPostData).pipe(
             tap({
                 complete: () => {
                     const messages = {
@@ -171,7 +173,7 @@ export class PostsService {
 
     deletePost(postId: string) {
         this.loaderService.showLoader()
-        return this.http.delete<{ message: string }>('http://localhost:3000/api/posts/' + postId).pipe(
+        return this.http.delete<{ message: string }>(`${BASE_URL}/posts/` + postId).pipe(
             tap({
                 complete: () => {
                     const messages = {
