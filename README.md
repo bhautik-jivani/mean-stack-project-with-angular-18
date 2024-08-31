@@ -12,7 +12,7 @@ Open another terminal and Run `npm run start:server` for a backend server.
 Create `.env` file inside `backend` folder and set below values
 `NODE_ENV=production`
 
-create json file inside `config` folder based on your requirements. Like, `devlopment.json`, `production.json` or `test.json` and set below configuration:
+create json file inside `config` folder based on your requirements. Like, `development.json`, `production.json` or `test.json` and set below configuration:
 ```json
 {
     "port": "<port>", // 3000 to run your backend server 
