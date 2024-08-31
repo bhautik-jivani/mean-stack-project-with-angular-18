@@ -26,6 +26,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              "src/assets",
               {
                 "glob": "**/*",
                 "input": "public"
@@ -69,6 +70,11 @@
                   "with": "src/environments/environment.staging.ts"
                 }
               ]
+            },
+            "local": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -81,9 +87,12 @@
             },
             "staging": {
               "buildTarget": "mean-stack-project:build:staging"
+            },
+            "local": {
+              "buildTarget": "mean-stack-project:build:local"
             }
           },
-          "defaultConfiguration": "staging"
+          "defaultConfiguration": "local"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
@@ -98,6 +107,7 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              "src/assets",
               {
                 "glob": "**/*",
                 "input": "public"

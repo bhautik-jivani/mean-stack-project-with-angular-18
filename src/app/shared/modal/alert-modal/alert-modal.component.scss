@@ -1,0 +1,35 @@
+:host .icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+:host [mat-dialog-title], mat-dialog-content {
+    text-align: center;
+}
+:host .mat-mdc-dialog-title {
+    padding: unset !important;
+}
+
+:host .responsive-icon {
+    height: 50px;
+    width: auto;
+}
+
+:host .success {
+    fill: #a5dc86;
+}
+:host .error {
+    fill: #f27474;
+}
+:host .warning {
+    fill: #f8bb86;
+}
+:host .info {
+    fill: #3fc3ee;
+}
+:host .question {
+    fill: #87adbd;
+}
+

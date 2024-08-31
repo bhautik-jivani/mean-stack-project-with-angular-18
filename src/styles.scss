@@ -31,16 +31,6 @@ mat-spinner {
 // html, body { height: 100%; }
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.alert-success .mat-mdc-dialog-surface {
-  background-color: lightgreen;
-}
-.alert-warning .mat-mdc-dialog-surface {
-  background-color: lightyellow;
-}
-.alert-error .mat-mdc-dialog-surface {
-  background-color: lightcoral;
-}
-
 
 .mat-form-field.ng-touched.ng-invalid .mat-form-field-outline {
   border-color: initial; /* Or any color that matches your default style */

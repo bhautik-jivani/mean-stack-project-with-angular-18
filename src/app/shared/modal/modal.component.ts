@@ -20,11 +20,12 @@ export class ModalComponent implements AfterContentInit {
   ngAfterContentInit(): void {
     const dialogRef = this.dialog.open(AlertModalComponent, {
       disableClose: true,
-      panelClass: this.message()?.mode === "SUCCESS" ? "alert-success" : this.message()?.mode === "ERROR" ? "alert-error" : this.message()?.mode === "WARNING" ? "alert-warning" : "",
+      // panelClass: this.message()?.mode === "SUCCESS" ? "alert-success" : this.message()?.mode === "ERROR" ? "alert-error" : this.message()?.mode === "WARNING" ? "alert-warning" : "",
       scrollStrategy: new NoopScrollStrategy(),
       data: {
         title: this.message()?.title,
-        message: this.message()?.message
+        message: this.message()?.message,
+        mode: this.message()?.mode,
       }
     })
 
